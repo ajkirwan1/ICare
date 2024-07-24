@@ -1,0 +1,18 @@
+header {
+  display: flex;
+  flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 2px solid black;
+}
+
+.icareLogo {
+    height: 100px;
+}
+
+.linkContainer {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 50px;
+}
