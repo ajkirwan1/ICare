@@ -1,4 +1,5 @@
 using ICare.Application.Interfaces;
+using ICare.Application.Mappings;
 using ICare.Persistence;
 using ICare.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,8 @@ builder.Services.AddCors(opt =>
 /*builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);*/
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddAutoMapper(typeof(MapperProfiles));
 
 var app = builder.Build();
 

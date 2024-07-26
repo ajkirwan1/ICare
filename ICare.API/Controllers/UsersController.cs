@@ -1,4 +1,5 @@
-﻿using ICare.Application.Interfaces;
+﻿using AutoMapper;
+using ICare.Application.Interfaces;
 using ICare.Domain;
 using ICare.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,13 @@ namespace ICare.API.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(DataContext dataContext, IUserRepository userRepository)
+        public UsersController(DataContext dataContext, IUserRepository userRepository, IMapper mapper)
         {
             _dataContext = dataContext;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]

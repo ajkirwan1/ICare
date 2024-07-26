@@ -1,8 +1,8 @@
 ﻿namespace ICare.Application.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T, U> where T : class where U : class
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<U>> GetAllAsync();
         Task<T> GetByIdAsync(Guid id);
         Task<T> AddAsync(T entity);
         Task<T?> UpdateAsync(T entity);

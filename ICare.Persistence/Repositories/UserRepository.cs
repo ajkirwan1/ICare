@@ -1,4 +1,6 @@
-﻿using ICare.Application.Interfaces;
+﻿using AutoMapper;
+using ICare.Application.DTOs;
+using ICare.Application.Interfaces;
 using ICare.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +9,12 @@ namespace ICare.Persistence.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _dataContext;
+        private readonly IMapper mapper;
 
-        public UserRepository(DataContext dataContext)
+        public UserRepository(DataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
+            this.mapper = mapper;
         }
         public async Task<User> AddAsync(User entity)
         {
@@ -25,9 +29,11 @@ namespace ICare.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<UserDTO>> GetAllAsync()
         {
-            return _dataContext.Users.ToList();
+            var users = _dataContext.Users.ToList();
+            var userDto = mapper.Map<IEnumerable<UserDTO>>(users);
+            return userDto;
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
