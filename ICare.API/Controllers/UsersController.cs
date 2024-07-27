@@ -1,7 +1,6 @@
-﻿using AutoMapper;
+﻿using ICare.Application.DTOs;
 using ICare.Application.Interfaces;
 using ICare.Domain;
-using ICare.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ICare.API.Controllers
@@ -10,15 +9,11 @@ namespace ICare.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly DataContext _dataContext;
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public UsersController(DataContext dataContext, IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository)
         {
-            _dataContext = dataContext;
             _userRepository = userRepository;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -35,15 +30,28 @@ namespace ICare.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDto)
         {
-            if (user == null)
+            if (userDto == null)
             {
                 return BadRequest();
             }
 
-            await _userRepository.AddAsync(user);
-            return Ok(user);
+            var result = await _userRepository.AddAsync(userDto);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDto, Guid id)
+        {
+            if (userDto == null)
+            {
+                return BadRequest();
+            }
+
+            var resultDto = await _userRepository.UpdateAsync(userDto, id);
+
+            return Ok(resultDto);
         }
 
     }

@@ -14,13 +14,13 @@ namespace ICare.Persistence
                 {
                     Id = Guid.NewGuid(),
                     Name = "Adam",
-                    Password = "password"
+                    Password = "password",
                 },
                 new User
                 {
                     Id = Guid.NewGuid(),
                     Name = "Kasia",
-                    Password = "password"
+                    Password = "password",
                 }
             };
 

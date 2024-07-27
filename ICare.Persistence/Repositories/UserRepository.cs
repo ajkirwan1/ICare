@@ -9,19 +9,21 @@ namespace ICare.Persistence.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _dataContext;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public UserRepository(DataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
-            this.mapper = mapper;
+            _mapper = mapper;
         }
-        public async Task<User> AddAsync(User entity)
+        public async Task<UserDTO> AddAsync(UserDTO userDTO)
         {
-            await _dataContext.Users.AddAsync(entity);
+            var user = _mapper.Map<User>(userDTO);
+
+            await _dataContext.Users.AddAsync(user);
             await _dataContext.SaveChangesAsync();
 
-            return entity;
+            return userDTO;
         }
 
         public Task<User> DeleteAsync(Guid id)
@@ -32,7 +34,7 @@ namespace ICare.Persistence.Repositories
         public async Task<IEnumerable<UserDTO>> GetAllAsync()
         {
             var users = _dataContext.Users.ToList();
-            var userDto = mapper.Map<IEnumerable<UserDTO>>(users);
+            var userDto = _mapper.Map<IEnumerable<UserDTO>>(users);
             return userDto;
         }
 
@@ -42,12 +44,21 @@ namespace ICare.Persistence.Repositories
             return result;
         }
 
-        public async Task<User> UpdateAsync(User entity)
+        public async Task<UserDTO?> UpdateAsync(UserDTO userDTO, Guid id)
         {
-            await _dataContext.Users.AddAsync(entity);
+            var user = await _dataContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            user.Name = userDTO.Name;
+            user.Password = userDTO.Password;
+
             await _dataContext.SaveChangesAsync();
 
-            return entity;
+            return userDTO;
         }
     }
 }
